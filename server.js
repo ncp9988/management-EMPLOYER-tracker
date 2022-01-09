@@ -1,17 +1,13 @@
-const express = require('express');
-// const inputCheck = require('./utils/inputCheck');
+
+const inputCheck = require('./utils/inputCheck');
 const db = require('./db/connection')
 const apiRoutes = require('./routes/apiRoutes');
 
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 app.use('/api', apiRoutes);
 
+
+// Asking What would you like to do?
 const toDo = () => {
     inquirer.prompt({
         type: 'list',
@@ -22,6 +18,7 @@ const toDo = () => {
     });
 };
 
+// ADD a Department
 
 const addDepartment = () => {
     return inquirer.prompt([
@@ -34,7 +31,7 @@ const addDepartment = () => {
     ]);
 };
 
-// ADD a Department
+
 app.post('/department', ({ body }, res) => {
     const errors = inputCheck(
         body,
@@ -63,6 +60,13 @@ app.post('/department', ({ body }, res) => {
     });
 });
 
+
+
+
+
+
+// ADD a Role
+
 const addRole = () => {
     return inquirer.prompt([
         {
@@ -83,7 +87,6 @@ const addRole = () => {
     ]);
 };
 
-// ADD a Role
 app.post('/role', ({ body }, res) => {
     const errors = inputCheck(
         body,
@@ -116,6 +119,12 @@ app.post('/role', ({ body }, res) => {
     });
 });
 
+
+
+
+
+// ADD a EMPLOYEE
+
 const addEmployee = () => {
     return inquirer.prompt([
         {
@@ -142,7 +151,6 @@ const addEmployee = () => {
 };
 
 
-// ADD a EMPLOYEE
 app.post('/employee', ({ body }, res) => {
     const errors = inputCheck(
         body,
@@ -179,10 +187,10 @@ app.post('/employee', ({ body }, res) => {
 
 
 
-    
 
 
 
+// View the total utilized budget of a department—in other words, the combined salaries of all employees in that department.
 
 
 
