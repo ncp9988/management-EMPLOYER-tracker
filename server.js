@@ -1,10 +1,11 @@
 
 const db = require('./db/connection')
-const {getAllDepartment, deleteDepartment} = require('./lib/department');
-const {getAllEmployee, updateEmployeeRole, updateEmployeeManager, deleteEmploy} = require('./lib/employee');
-const {getAllRole, deleteRole} = require('./lib/role');
+// const {getAllDepartment, deleteDepartment} = require('./lib/department');
+// const {getAllEmployee, updateEmployeeRole, updateEmployeeManager, deleteEmploy} = require('./lib/employee');
+// const {getAllRole, deleteRole} = require('./lib/role');
 
 const inquirer = require('inquirer');
+require("console.table")
 
 db.connect(function (err) {
     if (err) console.log("Error in conncecting to Database", err);
@@ -28,12 +29,14 @@ const toDo = () => {
             'View Employees by Department',
             'Delete Department',
             'Delete Role',
-            'Delete Employee'],
+            'Delete Employee',
+            'Exit',
+        ],
 
     }).then((response) => {
-        switch (response.option) {
+        switch (response.options) {
             case "View All Departments":
-                console.log(getAllDepartment());
+                getAllDepartments()
                 break;
             case "View All Roles":
                 console.log(getAllRole());
@@ -61,7 +64,9 @@ const toDo = () => {
             case "Delete Role":
                 break;
             case "Delete Employee":
-                break;
+                break
+                default:
+                    process.exit(0)
         }
     })
 };
@@ -87,6 +92,20 @@ const addDepartment = () => {
             toDo()
         })
     }) 
+};
+
+// Get ALL departments
+function getAllDepartments  () {
+    const sql = `SELECT * FROM departments`;
+     db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err)
+            
+        }
+     
+        console.table(rows)
+        toDo()
+    });
 };
 
 
