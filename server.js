@@ -68,16 +68,26 @@ const toDo = () => {
 
 // ADD a Department
 
-// const addDepartment = () => {
-//     return inquirer.prompt([
-//         {
-//             type: 'input',
-//             name: 'departmentName',
-//             message: "What is the name of the department?",
-//         },
+const addDepartment = () => {
+     inquirer.prompt([
+        {
+            type: 'input',
+            name: 'departmentName',
+            message: "What is the name of the department?",
+        }
 
-//     ]);
-// };
+    ]).then(({departmentName}) =>{
+        db.query("INSERT INTO DEPARTMENTS (NAME) VALUES(?)",departmentName,
+        (err, rows) => {
+            if (err) {
+                console.log(err)
+                return err;
+            }
+            console.table(rows)
+            toDo()
+        })
+    }) 
+};
 
 
 // app.post('/department', ({ body }, res) => {
