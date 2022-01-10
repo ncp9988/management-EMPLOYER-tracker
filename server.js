@@ -45,7 +45,7 @@ const toDo = () => {
                 console.log(getAllEmployee());
                 break;
             case "Add A Department":
-                
+
                 break;
             case "Add A Role":
                 break;
@@ -65,8 +65,8 @@ const toDo = () => {
                 break;
             case "Delete Employee":
                 break
-                default:
-                    process.exit(0)
+            default:
+                process.exit(0)
         }
     })
 };
@@ -74,35 +74,63 @@ const toDo = () => {
 // ADD a Department
 
 const addDepartment = () => {
-     inquirer.prompt([
+    inquirer.prompt([
         {
             type: 'input',
             name: 'departmentName',
             message: "What is the name of the department?",
         }
 
-    ]).then(({departmentName}) =>{
-        db.query("INSERT INTO DEPARTMENTS (NAME) VALUES(?)",departmentName,
-        (err, rows) => {
-            if (err) {
-                console.log(err)
-                return err;
-            }
-            console.table(rows)
-            toDo()
-        })
-    }) 
+    ]).then(({ departmentName }) => {
+        db.query("INSERT INTO DEPARTMENTS (NAME) VALUES(?)", departmentName,
+            (err, rows) => {
+                if (err) {
+                    console.log(err)
+                    return err;
+                }
+                console.table(rows)
+                toDo()
+            })
+    })
 };
 
 // Get ALL departments
-function getAllDepartments  () {
+function getAllDepartments() {
     const sql = `SELECT * FROM departments`;
-     db.query(sql, (err, rows) => {
+    db.query(sql, (err, rows) => {
         if (err) {
             console.log(err)
-            
+
         }
-     
+
+        console.table(rows)
+        toDo()
+    });
+};
+
+// Get ALL roles
+function getAllRole() {
+    const sql = `SELECT * FROM roles`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err)
+
+        }
+
+        console.table(rows)
+        toDo()
+    });
+};
+
+// Get ALL employees
+function getAllEmployee() {
+    const sql = `SELECT * FROM employees`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err)
+
+        }
+
         console.table(rows)
         toDo()
     });
