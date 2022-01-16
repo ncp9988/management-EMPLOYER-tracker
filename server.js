@@ -5,6 +5,9 @@ const db = require('./db/connection')
 // const {getAllRole, deleteRole} = require('./lib/role');
 
 const inquirer = require('inquirer');
+// const { deleteDepatrtment } = require('./lib/department');
+// const { deleteRole } = require('./lib/role');
+// const { deleteEmployee } = require('./lib/employee');
 require("console.table")
 
 db.connect(function (err) {
@@ -30,7 +33,7 @@ const toDo = () => {
             'Delete Department',
             'Delete Role',
             'Delete Employee',
-            'Exit',
+            'Exit'
         ],
 
     }).then((response) => {
@@ -45,25 +48,34 @@ const toDo = () => {
                 console.log(getAllEmployee());
                 break;
             case "Add A Department":
-
+                addDepartment()
                 break;
             case "Add A Role":
+                addRole()
                 break;
             case "Add An Employee":
+                addEmployee()
                 break;
             case "Update Employee Role":
+                updateEmployeeRole()
                 break;
             case "Update Employee Manager":
+                updateEmployeeManager()
                 break;
             case "View Employees By Manager":
+                viewEmployeeByManager()
                 break;
             case "View Employees by Department":
+                viewEmployeeByDepartment()
                 break;
             case "Delete Department":
+                deleteDepartment()
                 break;
             case "Delete Role":
+                deleteRole()
                 break;
             case "Delete Employee":
+                deleteEmployee()
                 break
             default:
                 process.exit(0)
@@ -71,28 +83,9 @@ const toDo = () => {
     })
 };
 
-// ADD a Department
 
-const addDepartment = () => {
-    inquirer.prompt([
-        {
-            type: 'input',
-            name: 'departmentName',
-            message: "What is the name of the department?",
-        }
 
-    ]).then(({ departmentName }) => {
-        db.query("INSERT INTO DEPARTMENTS (NAME) VALUES(?)", departmentName,
-            (err, rows) => {
-                if (err) {
-                    console.log(err)
-                    return err;
-                }
-                console.table(rows)
-                toDo()
-            })
-    })
-};
+
 
 // Get ALL departments
 function getAllDepartments() {
@@ -128,167 +121,184 @@ function getAllEmployee() {
     db.query(sql, (err, rows) => {
         if (err) {
             console.log(err)
-
         }
-
         console.table(rows)
         toDo()
     });
 };
 
+// ADD a Department
 
-// app.post('/department', ({ body }, res) => {
-//     const errors = inputCheck(
-//         body,
-//         'name'
-//     );
-//     if (errors) {
-//         res.status(400).json({ error: errors });
-//         return;
-//     }
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'departmentName',
+            message: "What is the name of the department?",
+        }
 
-//     const sql = `INSERT INTO departments (name) VALUES (?)`;
-//     const params = [
-//         body.name
-//     ];
+    ]).then(({ departmentName }) => {
+        db.query("INSERT INTO DEPARTMENTS (NAME) VALUES(?)", departmentName,
+            (err, rows) => {
+                if (err) {
+                    console.log(err)
+                    return err;
+                }
+                console.table(rows)
+                toDo()
+            })
+    })
+};
 
-//     db.query(sql, params, (err, result) => {
-//         if (err) {
-//             res.status(400).json({ error: err.message });
-//             return;
-//         }
-//         res.json({
-//             message: 'success',
-//             data: body,
-//             changes: result.affectedRows
-//         });
-//     });
-// });
+// ADD Roles
+function addRole() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'roleName',
+            message: "What is the name of the role?",
+        },
+        {
+            type: 'input',
+            name: 'roleSalary',
+            message: "What is the salary of the role?",
+        },
+        {
+            type: 'input',
+            name: 'roleDepartment',
+            message: "What is the department of the role?",
+        },
+    ]).then(({ roleAdded }) => {
+        db.query("INSERT INTO ROLES (title, salary, department_id) VALUES (?,?,?)", roleAdded,
+            (err, rows) => {
+                if (err) {
+                    console.log(err)
+                    return err;
+                }
+                console.table(rows)
+                toDo()
+            })
+    })
+};
+
+// ADD a EMPLOYEE
+function addEmployee() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'employeeFirstName',
+            message: "What is employee's first name",
+        },
+        {
+            type: 'input',
+            name: 'employeeLastName',
+            message: "What is employee's last name?",
+        },
+        {
+            type: 'input',
+            name: 'employeeRole',
+            message: "What is employee's role?",
+        },
+        {
+            type: 'input',
+            name: 'employeeManager',
+            message: "Who is employee's manager?"
+        },
+    ]).then(({ employeeAdded }) => {
+        db.query("INSERT INTO EMPLOYEES (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)", employeeAdded,
+            (err, rows) => {
+                if (err) {
+                    console.log(err)
+                    return err;
+                }
+                console.table(rows)
+                toDo()
+            })
+    })
+};
+
+// UPDATE Employee Role
+function updateEmployeeRole() {
+    db.query("UPDATE voters SET role_id = ? WHERE id = ?")
+    if (err) {
+        console.log(err)
+        return err;
+    }
+    console.table(rows)
+    toDo()
+    
+};
+
+// UPDATE Employee Manager
+function updateEmployeeManager() {
+    db.query("UPDATE voters SET manager_id = ? WHERE id = ?");
+    if (err) {
+        console.log(err)
+        return err;
+    }
+    console.table(rows)
+    toDo()
+};
+
+// VIEW Employees By Manager
+function viewEmployeeByManager() {
+    db.query("SELECT FROM employees WHERE id = ?");
+    if (err) {
+        console.log(err)
+        return err;
+    }
+    console.table(rows)
+    toDo()
+};
+
+// VIEW Employee By Department
+function viewEmployeeByDepartment() {
+    db.query("SELECT FROM employees WHERE id = ?");
+    if (err) {
+        console.log(err)
+        return err;
+    }
+    console.table(rows)
+    toDo()
+};
+
+// Delete Department
+function deleteDepartment() {
+    db.query('DELETE FROM deparments WHERE id = ?');
+    if (err) {
+        console.log(err)
+        return err;
+    }
+    console.table(rows)
+    toDo()
+};
+
+//Delete Role
+function deleteRole() {
+    db.query("DELETE FROM roles WHERE id = ?");
+    if (err) {
+        console.log(err)
+        return err;
+    }
+    console.table(rows)
+    toDo()
+};
+
+//Delete Employee
+function deleteEmployee() {
+    db.query("DELETE FROM employees WHERE id = ?");
+    if (err) {
+        console.log(err)
+        return err;
+    }
+    console.table(rows)
+    toDo()
+};
 
 
 
 
 
-
-// // ADD a Role
-
-// const addRole = () => {
-//     return inquirer.prompt([
-//         {
-//             type: 'input',
-//             name: 'roleName',
-//             message: "What is the name of the role?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'roleSalary',
-//             message: "What is the salary of the role?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'roleDepartment',
-//             message: "What is the department of the role?",
-//         },
-//     ]);
-// };
-
-// app.post('/role', ({ body }, res) => {
-//     const errors = inputCheck(
-//         body,
-//         'title',
-//         'salary',
-//         'department_id'
-//     );
-//     if (errors) {
-//         res.status(400).json({ error: errors });
-//         return;
-//     }
-
-//     const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`;
-//     const params = [
-//         body.title,
-//         body.salary,
-//         body.department_id
-//     ];
-
-//     db.query(sql, params, (err, result) => {
-//         if (err) {
-//             res.status(400).json({ error: err.message });
-//             return;
-//         }
-//         res.json({
-//             message: 'success',
-//             data: body,
-//             changes: result.affectedRows
-//         });
-//     });
-// });
-
-
-
-
-
-// // ADD a EMPLOYEE
-
-// const addEmployee = () => {
-//     return inquirer.prompt([
-//         {
-//             type: 'input',
-//             name: 'employeeFirstName',
-//             message: "What is employee's first name",
-//         },
-//         {
-//             type: 'input',
-//             name: 'employeeLastName',
-//             message: "What is employee's last name?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'employeeRole',
-//             message: "What is employee's role?",
-//         },
-//         {
-//             type: 'input',
-//             name: 'employeeManager',
-//             message: "Who is employee's manager?"
-//         },
-//     ]);
-// };
-
-
-// app.post('/employee', ({ body }, res) => {
-//     const errors = inputCheck(
-//         body,
-//         'first_name',
-//         'last_name',
-//         'role_id',
-//         'manager_id'
-//     );
-//     if (errors) {
-//         res.status(400).json({ error: errors });
-//         return;
-//     }
-
-//     const sql = `INSERT INTO emloyees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
-//     const params = [
-//         body.first_name,
-//         body.last_name,
-//         body.role_id,
-//         body.manager_id
-//     ];
-
-//     db.query(sql, params, (err, result) => {
-//         if (err) {
-//             res.status(400).json({ error: err.message });
-//             return;
-//         }
-//         res.json({
-//             message: 'success',
-//             data: body,
-//             changes: result.affectedRows
-//         });
-//     });
-// });
 
 
 
