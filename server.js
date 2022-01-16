@@ -1,13 +1,9 @@
 
 const db = require('./db/connection')
-// const {getAllDepartment, deleteDepartment} = require('./lib/department');
-// const {getAllEmployee, updateEmployeeRole, updateEmployeeManager, deleteEmploy} = require('./lib/employee');
-// const {getAllRole, deleteRole} = require('./lib/role');
+
 
 const inquirer = require('inquirer');
-// const { deleteDepatrtment } = require('./lib/department');
-// const { deleteRole } = require('./lib/role');
-// const { deleteEmployee } = require('./lib/employee');
+
 require("console.table")
 
 db.connect(function (err) {
@@ -270,80 +266,88 @@ function updateEmployeeManager() {
 
 // VIEW Employees By Manager
 function viewEmployeeByManager() {
-    db.query("SELECT FROM employees WHERE id = ?");
-    if (err) {
-        console.log(err)
-        return err;
-    }
-    console.table(rows)
-    toDo()
+    db.query("SELECT a.id, a.first_name,a.last_name,a.role_id, a.manager_id, b.first_name, b.last_name from  employees a, employees b where a.manager_id = b.id order by a.manager_id;",
+        (err, rows) => {
+            if (err) {
+                console.log(err)
+                return err;
+            }
+            console.table(rows)
+            toDo()
+        });
 };
 
 // VIEW Employee By Department
 function viewEmployeeByDepartment() {
-    db.query("SELECT FROM employees WHERE id = ?");
-    if (err) {
-        console.log(err)
-        return err;
-    }
-    console.table(rows)
-    toDo()
+    db.query("select a.id,a.first_name,a.last_name,a.role_id,b.title,b.salary,b.department_id,c.name from employees a,roles b,departments c where a.role_id =b.id and b.department_id = c.id;",
+        (err, rows) => {
+            if (err) {
+                console.log(err)
+                return err;
+            }
+            console.table(rows)
+            toDo()
+        });
+
 };
 
 // Delete Department
 function deleteDepartment() {
-    db.query('DELETE FROM deparments WHERE id = ?');
-    if (err) {
-        console.log(err)
-        return err;
-    }
-    console.table(rows)
-    toDo()
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'departmentID',
+            message: 'What is department ID you want to delete?'
+        }
+    ]).then(({ departmentID }) => {
+        db.query("DELETE FROM departments WHERE id = ?", departmentID, (err, rows) => {
+            if (err) {
+                console.log(err)
+                return err;
+            }
+            console.table(rows)
+            toDo()
+        })
+    })
 };
 
 //Delete Role
 function deleteRole() {
-    db.query("DELETE FROM roles WHERE id = ?");
-    if (err) {
-        console.log(err)
-        return err;
-    }
-    console.table(rows)
-    toDo()
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'roleID',
+            message: 'What is role ID you want to delete?'
+        }
+    ]).then(({ roleID }) => {
+        db.query("DELETE FROM roles WHERE id = ?", roleID, (err, rows) => {
+            if (err) {
+                console.log(err)
+                return err;
+            }
+            console.table(rows)
+            toDo()
+        })
+    })
 };
 
 //Delete Employee
 function deleteEmployee() {
-    db.query("DELETE FROM employees WHERE id = ?");
-    if (err) {
-        console.log(err)
-        return err;
-    }
-    console.table(rows)
-    toDo()
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'employeeID',
+            message: 'What is employee ID you want to delete?'
+        }
+    ]).then(({ employeeID }) => {
+        db.query("DELETE FROM employees WHERE id = ?", employeeID, (err, rows) => {
+            if (err) {
+                console.log(err)
+                return err;
+            }
+            console.table(rows)
+            toDo()
+        })
+    })
 };
 
-
-
-
-
-
-
-
-
-
-
-// // View the total utilized budget of a department—in other words, the combined salaries of all employees in that department.
-
-
-
-
-
-// // Start server after DB connection
-// db.connect(err => {
-//     if (err) throw err;
-//     console.log('Database connected.');
-//     app.listen(PORT, () => {
-//         console.log(`Server running on port ${PORT}`);
-//     });
-// });
