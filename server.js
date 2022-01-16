@@ -168,8 +168,8 @@ function addRole() {
             name: 'roleDepartment',
             message: "What is the department of the role?",
         },
-    ]).then(({ roleAdded }) => {
-        db.query("INSERT INTO ROLES (title, salary, department_id) VALUES (?,?,?)", roleAdded,
+    ]).then(({ roleName,roleSalary,roleDepartment }) => {
+        db.query("INSERT INTO ROLES (title, salary, department_id) VALUES (?,?,?)", [roleName,roleSalary,roleDepartment],
             (err, rows) => {
                 if (err) {
                     console.log(err)
@@ -204,8 +204,8 @@ function addEmployee() {
             name: 'employeeManager',
             message: "Who is employee's manager?"
         },
-    ]).then(({ employeeAdded }) => {
-        db.query("INSERT INTO EMPLOYEES (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)", employeeAdded,
+    ]).then(({ employeeFirstName, employeeLastName, employeeRole, employeeManager }) => {
+        db.query("INSERT INTO EMPLOYEES (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)", [employeeFirstName, employeeLastName, employeeRole, employeeManager],
             (err, rows) => {
                 if (err) {
                     console.log(err)
