@@ -1,10 +1,8 @@
 
-const db = require('./db/connection')
-
-
+const db = require('./db/connection');
 const inquirer = require('inquirer');
 
-require("console.table")
+require("console.table");
 
 db.connect(function (err) {
     if (err) console.log("Error in conncecting to Database", err);
@@ -78,9 +76,6 @@ const toDo = () => {
         }
     })
 };
-
-
-
 
 
 // Get ALL departments
@@ -236,7 +231,9 @@ function updateEmployeeRole() {
             toDo()
         })
     })
-}
+};
+
+
 // UPDATE Employee Manager
 function updateEmployeeManager() {
     inquirer.prompt([
