@@ -168,8 +168,8 @@ function addRole() {
             name: 'roleDepartment',
             message: "What is the department of the role?",
         },
-    ]).then(({ roleName,roleSalary,roleDepartment }) => {
-        db.query("INSERT INTO ROLES (title, salary, department_id) VALUES (?,?,?)", [roleName,roleSalary,roleDepartment],
+    ]).then(({ roleName, roleSalary, roleDepartment }) => {
+        db.query("INSERT INTO ROLES (title, salary, department_id) VALUES (?,?,?)", [roleName, roleSalary, roleDepartment],
             (err, rows) => {
                 if (err) {
                     console.log(err)
@@ -219,25 +219,53 @@ function addEmployee() {
 
 // UPDATE Employee Role
 function updateEmployeeRole() {
-    db.query("UPDATE voters SET role_id = ? WHERE id = ?")
-    if (err) {
-        console.log(err)
-        return err;
-    }
-    console.table(rows)
-    toDo()
-    
-};
-
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'employeeID',
+            message: 'What is employee ID?'
+        },
+        {
+            type: 'input',
+            name: 'roleID',
+            message: 'What is the new role ID you want to update?'
+        }
+    ]).then(({ employeeID, roleID }) => {
+        db.query("UPDATE employees SET role_id = ? WHERE id = ?", [roleID, employeeID], (err, rows) => {
+            if (err) {
+                console.log(err)
+                return err;
+            }
+            console.table(rows)
+            toDo()
+        })
+    })
+}
 // UPDATE Employee Manager
 function updateEmployeeManager() {
-    db.query("UPDATE voters SET manager_id = ? WHERE id = ?");
-    if (err) {
-        console.log(err)
-        return err;
-    }
-    console.table(rows)
-    toDo()
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'employeeID',
+            message: 'What is employee ID?'
+        },
+        {
+            type: 'input',
+            name: 'managerID',
+            message: 'What is the new manager ID you want to update?'
+        }
+    ]).then(({ employeeID, managerID }) => {
+        db.query("UPDATE employees SET manager_id = ? WHERE id = ?", [managerID, employeeID], (err, rows) => {
+
+            if (err) {
+                console.log(err)
+                return err;
+            }
+            console.table(rows)
+            toDo()
+        })
+    })
+
 };
 
 // VIEW Employees By Manager
